@@ -23,7 +23,7 @@
     func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, didSelectItemAt index: Int)
 
 
-## DataSource
+## Data Source
 
     func numberOfItems(in slidingCollectionView: SlidingCollectionView) -> Int
 
@@ -32,4 +32,4 @@
 ## Todo
 
 - [ ] Move to Carthage & Cocoapods
-- [ ] Support horizontal scrolling axis
+- [ ] Support vertical axis
