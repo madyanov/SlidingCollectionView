@@ -8,6 +8,14 @@
     var spacing: CGFloat
     var maximumNumberOfRows: Int
 
+## Methods
+
+    func register(_ cellClass: AnyClass?, forCellWithReuseIdentifier identifier: String)
+
+    func dequeueReusableCell(withReuseIdentifier identifier: String, for index: Int) -> UICollectionViewCell
+
+    func reloadData()
+
 ## Delegate
 
     func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, widthForItemAt index: Int) -> CGFloat
