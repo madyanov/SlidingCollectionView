@@ -1,6 +1,6 @@
 # Preview
 
-[[https://github.com/madyanov/SlidingCollectionView/blob/master/preview.gif|alt=Preview]]
+![Preview](preview.gif)
 
 # Properties
 
