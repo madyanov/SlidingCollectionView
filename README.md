@@ -35,5 +35,5 @@ Paging CollectionView with simple behavior: on each page cells are aligned to th
 
 ## Todo
 
-- [ ] Move to Carthage & Cocoapods
+- [ ] Add to Carthage & Cocoapods
 - [ ] Support vertical axis
