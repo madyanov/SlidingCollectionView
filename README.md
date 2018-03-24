@@ -1,3 +1,5 @@
+Paging CollectionView with simple behavior: on each page cells are aligned to the left edge.
+
 ## Preview
 
 ![Preview](preview.gif)
