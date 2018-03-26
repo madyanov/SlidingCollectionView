@@ -8,30 +8,38 @@ Paging CollectionView with simple behavior: cells are aligned to the left edge o
 
 ## Properties
 
-    var itemHeight: CGFloat
-    var spacing: CGFloat
-    var maximumNumberOfRows: Int
+```swift
+var itemHeight: CGFloat
+var spacing: CGFloat
+var maximumNumberOfRows: Int
+```
 
 ## Methods
 
-    func register(_ cellClass: AnyClass?, forCellWithReuseIdentifier identifier: String)
+```swift
+func register(_ cellClass: AnyClass?, forCellWithReuseIdentifier identifier: String)
 
-    func dequeueReusableCell(withReuseIdentifier identifier: String, for index: Int) -> UICollectionViewCell
+func dequeueReusableCell(withReuseIdentifier identifier: String, for index: Int) -> UICollectionViewCell
 
-    func reloadData()
+func reloadData()
+```
 
 ## Delegate
 
-    func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, widthForItemAt index: Int) -> CGFloat
+```swift
+func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, widthForItemAt index: Int) -> CGFloat
 
-    func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, didSelectItemAt index: Int)
+func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, didSelectItemAt index: Int)
+```
 
 
 ## Data Source
 
-    func numberOfItems(in slidingCollectionView: SlidingCollectionView) -> Int
+```swift
+func numberOfItems(in slidingCollectionView: SlidingCollectionView) -> Int
 
-    func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, cellForItemAt index: Int) -> UICollectionViewCell
+func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, cellForItemAt index: Int) -> UICollectionViewCell
+```
 
 ## Todo
 
