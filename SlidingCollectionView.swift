@@ -26,7 +26,7 @@ class SlidingCollectionView: UIView {
         didSet { isNeedsReloadData = oldValue !== dataSource }
     }
 
-    var itemHeight: CGFloat = 44 {
+    var itemHeight: CGFloat = 40 {
         didSet { isNeedsReloadData = oldValue != itemHeight }
     }
 
@@ -37,8 +37,6 @@ class SlidingCollectionView: UIView {
     var maximumNumberOfRows = 4 {
         didSet { isNeedsReloadData = oldValue != maximumNumberOfRows }
     }
-
-    var leftInset: CGFloat = 5
 
     var heightToFit: CGFloat {
         let numberOfRows = itemsGrid.count
@@ -133,6 +131,8 @@ class SlidingCollectionView: UIView {
         let contentWidth = CGFloat(pageOffsets.count + 1) * bounds.width
         contentViewWidthConstraint?.constant = contentWidth
 
+        var constraints: [NSLayoutConstraint] = []
+
         for index in itemsGrid.indices {
             let collectionView = makeCollectionView(with: contentWidth, center: index == 0)
             stackView.addArrangedSubview(collectionView)
@@ -140,11 +140,13 @@ class SlidingCollectionView: UIView {
 
             let collectionViewHeight = itemHeight + spacing * (index == 0 ? 2 : 1)
 
-            NSLayoutConstraint.activate([
+            constraints += [
                 collectionView.widthAnchor.constraint(equalTo: widthAnchor),
                 collectionView.heightAnchor.constraint(equalToConstant: collectionViewHeight)
-            ])
+            ]
         }
+
+        NSLayoutConstraint.activate(constraints)
     }
 
     private func setupSubviews() {
@@ -288,8 +290,7 @@ extension SlidingCollectionView: UICollectionViewDelegate {
             let previousPageOffset = pageOffsets[page - 1]?[row] ?? CGFloat(page) * bounds.width
             let pageOffset = pageOffsets[page]?[row] ?? CGFloat(page + 1) * bounds.width
             let contentOffset = previousPageOffset + min(bounds.width, pageOffset - previousPageOffset) * pageProgress
-            let leftInset = (page > 0 ? 1 : pageProgress) * self.leftInset
-            collectionView.contentOffset.x = contentOffset - leftInset
+            collectionView.contentOffset.x = contentOffset
         }
     }
 
@@ -302,19 +303,11 @@ extension SlidingCollectionView: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        for selectedItemIndexPath in collectionView.indexPathsForSelectedItems ?? [] {
-            if selectedItemIndexPath == indexPath {
-                continue
-            }
-
+        for selectedItemIndexPath in collectionView.indexPathsForSelectedItems ?? [] where selectedItemIndexPath != indexPath {
             collectionView.deselectItem(at: selectedItemIndexPath, animated: false)
         }
 
-        for otherCollectionView in collectionViews {
-            if otherCollectionView == collectionView {
-                continue
-            }
-
+        for otherCollectionView in collectionViews where otherCollectionView != collectionView {
             for selectedItemIndexPath in otherCollectionView.indexPathsForSelectedItems ?? [] {
                 otherCollectionView.deselectItem(at: selectedItemIndexPath, animated: false)
             }
@@ -352,7 +345,7 @@ private protocol SlidingCollectionViewLayoutDelegate: class {
 private class SlidingCollectionViewLayout: UICollectionViewLayout {
     weak var delegate: SlidingCollectionViewLayoutDelegate?
 
-    var itemHeight: CGFloat = 44 {
+    var itemHeight: CGFloat = 40 {
         didSet { invalidateLayout() }
     }
 
