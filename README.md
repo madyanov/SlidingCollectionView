@@ -16,7 +16,7 @@ var spacing: CGFloat = 8
 var maximumNumberOfRows: Int = 4
 
 // height of the collection view to fit enough rows
-var heightToFit: CGFloat
+var heightToFit: CGFloat { get }
 ```
 
 ## Methods
