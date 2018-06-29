@@ -9,9 +9,14 @@ Paging CollectionView with simple behavior: cells are aligned to the left edge o
 ## Properties
 
 ```swift
-var itemHeight: CGFloat
-var spacing: CGFloat
-var maximumNumberOfRows: Int
+var itemHeight: CGFloat = 40
+
+var spacing: CGFloat = 8
+
+var maximumNumberOfRows: Int = 4
+
+// height of the collection view to fit enough rows
+var heightToFit: CGFloat
 ```
 
 ## Methods
