@@ -19,23 +19,23 @@ protocol SlidingCollectionViewDataSource: class {
 
 class SlidingCollectionView: UIView {
     weak var delegate: SlidingCollectionViewDelegate? {
-        didSet { isNeedsReloadData = oldValue !== delegate }
+        didSet { isNeedsReloadData = oldValue !== delegate ? true : isNeedsReloadData }
     }
 
     weak var dataSource: SlidingCollectionViewDataSource? {
-        didSet { isNeedsReloadData = oldValue !== dataSource }
+        didSet { isNeedsReloadData = oldValue !== dataSource ? true : isNeedsReloadData }
     }
 
     var itemHeight: CGFloat = 40 {
-        didSet { isNeedsReloadData = oldValue != itemHeight }
+        didSet { isNeedsReloadData = oldValue != itemHeight ? true : isNeedsReloadData }
     }
 
     var spacing: CGFloat = 8 {
-        didSet { isNeedsReloadData = oldValue != spacing }
+        didSet { isNeedsReloadData = oldValue != spacing ? true : isNeedsReloadData }
     }
 
     var maximumNumberOfRows = 4 {
-        didSet { isNeedsReloadData = oldValue != maximumNumberOfRows }
+        didSet { isNeedsReloadData = oldValue != maximumNumberOfRows ? true : isNeedsReloadData }
     }
 
     var heightToFit: CGFloat {
@@ -78,7 +78,6 @@ class SlidingCollectionView: UIView {
     private var oldBounds = CGRect.zero
     private var contentViewWidthConstraint: NSLayoutConstraint?
     private var stackViewLeftConstraint: NSLayoutConstraint?
-    private var isLaidOut = false
 
     convenience init() {
         self.init(frame: .zero)
@@ -89,11 +88,6 @@ class SlidingCollectionView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-
-        if !isLaidOut {
-            isLaidOut = true
-            isNeedsReloadData = true
-        }
 
         if isNeedsReloadData || bounds != oldBounds {
             isNeedsReloadData = false
