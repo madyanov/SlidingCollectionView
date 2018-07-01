@@ -48,5 +48,4 @@ func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, cellF
 
 ## Todo
 
-- [ ] Add to Carthage & Cocoapods
 - [ ] Support vertical axis
