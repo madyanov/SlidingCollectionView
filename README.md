@@ -48,4 +48,4 @@ func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, cellF
 
 ## Todo
 
-- [ ] Support vertical axis
+- [ ] Vertical axis support
