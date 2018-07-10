@@ -1,4 +1,4 @@
-**iOS 10+**
+**Tested on iOS 11+**
 
 Paging CollectionView with simple behavior: cells are aligned to the left edge on each page.
 
