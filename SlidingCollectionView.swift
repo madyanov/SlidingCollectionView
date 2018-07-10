@@ -16,6 +16,8 @@ private protocol SlidingCollectionViewProtocol {
     var maximumNumberOfRows: Int { get set }
 
     var heightToFit: CGFloat { get }
+    var isDragging: Bool { get }
+    var isDecelerating: Bool { get }
 
     func register(_ cellClass: AnyClass?, forCellWithReuseIdentifier identifier: String)
     func dequeueReusableCell(withReuseIdentifier identifier: String, for index: Int) -> UICollectionViewCell
@@ -26,6 +28,23 @@ private protocol SlidingCollectionViewProtocol {
 protocol SlidingCollectionViewDelegate: class {
     func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, widthForItemAt index: Int) -> CGFloat
     func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, didSelectItemAt index: Int)
+    func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, willDisplay cell: UICollectionViewCell)
+}
+
+extension SlidingCollectionViewDelegate {
+    func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, willDisplay cell: UICollectionViewCell) {
+        guard slidingCollectionView.isDragging else {
+            return
+        }
+
+        cell.alpha = 0
+        cell.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.2, options: [.allowUserInteraction, .curveEaseIn], animations: {
+            cell.alpha = 1
+            cell.transform = .identity
+        }, completion: nil)
+    }
 }
 
 protocol SlidingCollectionViewDataSource: class {
@@ -50,7 +69,7 @@ class SlidingCollectionView: UIView, SlidingCollectionViewProtocol {
         }
     }
 
-    var itemHeight: CGFloat = 40 {
+    var itemHeight: CGFloat = 44 {
         didSet {
             if itemHeight != oldValue {
                 setNeedsReloadData()
@@ -77,6 +96,14 @@ class SlidingCollectionView: UIView, SlidingCollectionViewProtocol {
     var heightToFit: CGFloat {
         let numberOfRows = itemsGrid.count
         return spacing + CGFloat(numberOfRows) * (itemHeight + spacing)
+    }
+
+    var isDragging: Bool {
+        return scrollView.isDragging
+    }
+
+    var isDecelerating: Bool {
+        return scrollView.isDecelerating
     }
 
     private lazy var scrollView: UIScrollView = {
@@ -117,7 +144,7 @@ class SlidingCollectionView: UIView, SlidingCollectionViewProtocol {
 
     convenience init() {
         self.init(frame: .zero)
-        
+
         setupSubviews()
         setupConstraints()
     }
@@ -329,6 +356,8 @@ extension SlidingCollectionView: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        delegate?.slidingCollectionView(self, willDisplay: cell)
+
         if !cell.isSelected || collectionView.indexPathsForSelectedItems?.contains(indexPath) ?? false {
             return
         }
