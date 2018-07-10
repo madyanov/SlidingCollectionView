@@ -7,6 +7,22 @@
 
 import UIKit
 
+private protocol SlidingCollectionViewProtocol {
+    var delegate: SlidingCollectionViewDelegate? { get set }
+    var dataSource: SlidingCollectionViewDataSource? { get set }
+
+    var itemHeight: CGFloat { get set }
+    var spacing: CGFloat { get set }
+    var maximumNumberOfRows: Int { get set }
+
+    var heightToFit: CGFloat { get }
+
+    func register(_ cellClass: AnyClass?, forCellWithReuseIdentifier identifier: String)
+    func dequeueReusableCell(withReuseIdentifier identifier: String, for index: Int) -> UICollectionViewCell
+    func setNeedsReloadData()
+    func reloadData()
+}
+
 protocol SlidingCollectionViewDelegate: class {
     func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, widthForItemAt index: Int) -> CGFloat
     func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, didSelectItemAt index: Int)
@@ -17,25 +33,45 @@ protocol SlidingCollectionViewDataSource: class {
     func slidingCollectionView(_ slidingCollectionView: SlidingCollectionView, cellForItemAt index: Int) -> UICollectionViewCell
 }
 
-class SlidingCollectionView: UIView {
+class SlidingCollectionView: UIView, SlidingCollectionViewProtocol {
     weak var delegate: SlidingCollectionViewDelegate? {
-        didSet { isNeedsReloadData = oldValue !== delegate ? true : isNeedsReloadData }
+        didSet {
+            if delegate !== oldValue {
+                setNeedsReloadData()
+            }
+        }
     }
 
     weak var dataSource: SlidingCollectionViewDataSource? {
-        didSet { isNeedsReloadData = oldValue !== dataSource ? true : isNeedsReloadData }
+        didSet {
+            if dataSource !== oldValue {
+                setNeedsReloadData()
+            }
+        }
     }
 
     var itemHeight: CGFloat = 40 {
-        didSet { isNeedsReloadData = oldValue != itemHeight ? true : isNeedsReloadData }
+        didSet {
+            if itemHeight != oldValue {
+                setNeedsReloadData()
+            }
+        }
     }
 
     var spacing: CGFloat = 8 {
-        didSet { isNeedsReloadData = oldValue != spacing ? true : isNeedsReloadData }
+        didSet {
+            if spacing != oldValue {
+                setNeedsReloadData()
+            }
+        }
     }
 
     var maximumNumberOfRows = 4 {
-        didSet { isNeedsReloadData = oldValue != maximumNumberOfRows ? true : isNeedsReloadData }
+        didSet {
+            if maximumNumberOfRows != oldValue {
+                setNeedsReloadData()
+            }
+        }
     }
 
     var heightToFit: CGFloat {
@@ -110,6 +146,10 @@ class SlidingCollectionView: UIView {
         }
 
         return UICollectionViewCell()
+    }
+
+    func setNeedsReloadData() {
+        isNeedsReloadData = true
     }
 
     func reloadData() {

@@ -9,23 +9,32 @@ Paging CollectionView with simple behavior: cells are aligned to the left edge o
 ## Properties
 
 ```swift
-var itemHeight: CGFloat = 40
+// height of the items
+var itemHeight: CGFloat { get set }
 
-var spacing: CGFloat = 8
+// horizontal & vertical spacing between items
+var spacing: CGFloat { get set }
 
-var maximumNumberOfRows: Int = 4
+// maximum number of rows in the collection
+var maximumNumberOfRows: Int { get set }
 
-// height of the collection view to fit enough rows
+// suggested height of the collection view to fit enough rows
 var heightToFit: CGFloat { get }
 ```
 
 ## Methods
 
 ```swift
+// register cell class
 func register(_ cellClass: AnyClass?, forCellWithReuseIdentifier identifier: String)
 
+// dequeue cell
 func dequeueReusableCell(withReuseIdentifier identifier: String, for index: Int) -> UICollectionViewCell
 
+// reload data at the end of the run loop
+func setNeedsReloadData()
+
+// reload data immediately
 func reloadData()
 ```
 
